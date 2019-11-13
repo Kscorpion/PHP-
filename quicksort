@@ -1,0 +1,38 @@
+<?php
+
+//快排
+function quicksort(&$arr,$left,$right){
+	if(count($arr)<=1)return $arr;
+	if($left>$right)return;
+	$i = $left;
+	$j = $right;
+	//这里做下标记
+	$guard = $arr[$left];
+	while($i<$j){
+		//以左边第一个元素作为标尺，一定要先从右边移动哨兵$j
+		while($i<$j && $arr[$j]>=$guard)$j--;
+		while($i<$j && $arr[$i]<=$guard)$i++;
+		//$j指向遇到比标尺大的值
+		//$i指向到比自己小的值
+		//进行位置交换
+		if($i<$j)list($arr[$j],$arr[$i]) = swap($arr[$j],$arr[$i]);
+		var_dump("交换$arr[$j]和$arr[$i]");
+		//促使标尺左边都是比自己小的，标尺右边都是比自己大的
+	}
+	//参考标记处：实际上就是将$i和$j两个哨兵相遇时对应的值
+	//与标尺对应的值做下交换
+	$arr[$left] = $arr[$i];
+	$arr[$i] = $guard;
+	quicksort($arr,0,$i-1);
+	quicksort($arr,$i+1,$right);
+}
+
+function swap($A,$B){
+	$temp = $A;
+	$A = $B;
+	$B = $temp;
+	return array($A,$B);
+}
+$arr = array(2,1,3,2,5,4,9,6,7);
+quicksort($arr,0,count($arr)-1);
+var_dump($arr);
